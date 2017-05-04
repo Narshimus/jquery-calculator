@@ -11,26 +11,14 @@ $(document).ready(function() {
   $('.operator').not('#clear').not('#equals').click(function() {
     let hasOperator = false;
     //check if screen is zero
-    if ($('#screen span:last-child').hasClass('zero')){
-      if ($(this).text() === '-') {
-        $('#screen').empty();
-        $('#screen').append(`<span class='operator negative'>${$(this).text()}</span>`);
-      }
-    }
-      else{
-      //check if previous spans contain operands or is negative
+    if (!$('#screen span:last-child').hasClass('zero') || $(this).text() === '-') {
+      //check if previous spans contain operands
       $('#screen').children().each(function() {
-        if ($(this).hasClass('operator') && !$(this).hasClass('negative')) {
+        if ($(this).hasClass('operator')) {
           hasOperator = true;
         }
       })
-      if (hasOperator === false && !$('#screen span:last-child').hasClass('error') ) {
-        $('#screen').append(`<span class='operator'>${$(this).text()}</span>`);
-      }
-      else{
-        $('#screen').empty();
-        $('#screen').append("<span class='error'>error</span>")
-      }
+      hasOperator === false ? $('#screen').append(`<span class='operator'>${$(this).text()}</span>`) : $('#screen').append('<span class='error'>error</span>');
     }
   })
 
@@ -38,10 +26,9 @@ $(document).ready(function() {
   $('#zero').click(function() {
     let last = $('#screen span:last-child');
     //check if screen is zero
-    if (!last.hasClass('zero')) {
-      console.log('buzz');
+    if (!$(last.hasClass('zero'))) {
       //check if previous span contain operands
-      if (!last.hasClass('operator')) {
+      if (!$(last.hasClass('operator'))) {
         $('#screen').append(`<span>${$(this).text()}</span>`);
       }
     }
